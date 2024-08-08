@@ -18,8 +18,6 @@ void main() {
   gl_Position = projection * view * model * vec4(Position, 1.0f);
 
   outFragPos = vec3(model * vec4(Position, 1.0));
-
   outTexCoord = TexCoords;
-  // 解决不等比缩放，对法向量产生的影响
-  outNormal = mat3(transpose(inverse(model))) * Normal;
+  outNormal = mat3(transpose(inverse(model))) * Normal;  // 解决不等比缩放，对法向量产生的影响
 }

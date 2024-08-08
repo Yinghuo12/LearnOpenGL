@@ -10,16 +10,14 @@
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
-std::string Shader::dirName;
 
 const unsigned int SCREEN_WIDTH = 800;
 const unsigned int SCREEN_HEIGHT = 600;
 
 using namespace std;
 
-int main(int argc, char *argv[])
+int main()
 {
-  Shader::dirName = argv[1];
   glfwInit();
   // 设置主要和次要版本
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -28,38 +26,37 @@ int main(int argc, char *argv[])
 
   // 创建窗口对象
   GLFWwindow *window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "LearnOpenGL", NULL, NULL);
-  if (window == NULL)
-  {
+  if (window == NULL) {
     std::cout << "Failed to create GLFW window" << std::endl;
     glfwTerminate();
     return -1;
   }
   glfwMakeContextCurrent(window);
 
-  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-  {
+  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
     std::cout << "Failed to initialize GLAD" << std::endl;
     return -1;
   }
   // 设置视口
   glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-  glEnable(GL_PROGRAM_POINT_SIZE);
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  // glEnable(GL_PROGRAM_POINT_SIZE);
+  // glEnable(GL_BLEND);
+  // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  // glEnable(GL_DEPTH_TEST);
-  // glDepthFunc(GL_LESS);
+  glEnable(GL_DEPTH_TEST);
+  glDepthFunc(GL_LESS);
 
   // 注册窗口变化监听
   glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-  Shader ourShader("./shader/vertex.glsl", "./shader/fragment.glsl");
+  Shader ourShader("../src/12_use_box_geometry/shader/vertex.glsl", "../src/12_use_box_geometry/shader/fragment.glsl");
 
   BoxGeometry boxGeometry(0.2, 1.5, 0.2, 1.0, 100.0, 1.0);
   // BoxGeometry boxGeometry(1.0, 0.1, 0.1, 1.0, 1.0, 1.0);
 
   // 生成纹理
   unsigned int texture1, texture2;
+  int width, height, nrChannels;
   glGenTextures(1, &texture1);
   glBindTexture(GL_TEXTURE_2D, texture1);
 
@@ -76,11 +73,9 @@ int main(int argc, char *argv[])
   stbi_set_flip_vertically_on_load(true);
 
   // 加载图片
-  int width, height, nrChannels;
-  unsigned char *data = stbi_load("./static/texture/container.jpg", &width, &height, &nrChannels, 0);
+  unsigned char *data = stbi_load("../static/texture/container.jpg", &width, &height, &nrChannels, 0);
 
-  if (data)
-  {
+  if (data) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
   }
@@ -96,14 +91,14 @@ int main(int argc, char *argv[])
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
   // 加载图片
-  data = stbi_load("./static/texture/dot.png", &width, &height, &nrChannels, 0);
+  data = stbi_load("../static/texture/dot.png", &width, &height, &nrChannels, 0);
 
-  if (data)
-  {
+  if (data) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
   }
   stbi_image_free(data);
+  
   ourShader.use();
   ourShader.setInt("texture1", 0);
   ourShader.setInt("texture2", 1);
@@ -145,15 +140,12 @@ int main(int argc, char *argv[])
   return 0;
 }
 
-void framebuffer_size_callback(GLFWwindow *window, int width, int height)
-{
+void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
   glViewport(0, 0, width, height);
 }
 
-void processInput(GLFWwindow *window)
-{
-  if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-  {
+void processInput(GLFWwindow *window) {
+  if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
     glfwSetWindowShouldClose(window, true);
   }
 }

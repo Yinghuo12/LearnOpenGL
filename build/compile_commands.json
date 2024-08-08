@@ -1,0 +1,37 @@
+[
+{
+  "directory": "C:/Users/Administrator/Desktop/project/LearnOpenGL-VSCode/build",
+  "command": "\"C:/Program Files/mingw64/bin/c++.exe\"   @CMakeFiles/demo.dir/includes_CXX.rsp -g   -std=gnu++11 -o CMakeFiles/demo.dir/src/25_spot_light/main.cpp.obj -c C:/Users/Administrator/Desktop/project/LearnOpenGL-VSCode/src/25_spot_light/main.cpp",
+  "file": "C:/Users/Administrator/Desktop/project/LearnOpenGL-VSCode/src/25_spot_light/main.cpp"
+},
+{
+  "directory": "C:/Users/Administrator/Desktop/project/LearnOpenGL-VSCode/build",
+  "command": "\"C:/Program Files/mingw64/bin/c++.exe\"   @CMakeFiles/demo.dir/includes_CXX.rsp -g   -std=gnu++11 -o CMakeFiles/demo.dir/include/imgui/imgui.cpp.obj -c C:/Users/Administrator/Desktop/project/LearnOpenGL-VSCode/include/imgui/imgui.cpp",
+  "file": "C:/Users/Administrator/Desktop/project/LearnOpenGL-VSCode/include/imgui/imgui.cpp"
+},
+{
+  "directory": "C:/Users/Administrator/Desktop/project/LearnOpenGL-VSCode/build",
+  "command": "\"C:/Program Files/mingw64/bin/c++.exe\"   @CMakeFiles/demo.dir/includes_CXX.rsp -g   -std=gnu++11 -o CMakeFiles/demo.dir/include/imgui/imgui_demo.cpp.obj -c C:/Users/Administrator/Desktop/project/LearnOpenGL-VSCode/include/imgui/imgui_demo.cpp",
+  "file": "C:/Users/Administrator/Desktop/project/LearnOpenGL-VSCode/include/imgui/imgui_demo.cpp"
+},
+{
+  "directory": "C:/Users/Administrator/Desktop/project/LearnOpenGL-VSCode/build",
+  "command": "\"C:/Program Files/mingw64/bin/c++.exe\"   @CMakeFiles/demo.dir/includes_CXX.rsp -g   -std=gnu++11 -o CMakeFiles/demo.dir/include/imgui/imgui_draw.cpp.obj -c C:/Users/Administrator/Desktop/project/LearnOpenGL-VSCode/include/imgui/imgui_draw.cpp",
+  "file": "C:/Users/Administrator/Desktop/project/LearnOpenGL-VSCode/include/imgui/imgui_draw.cpp"
+},
+{
+  "directory": "C:/Users/Administrator/Desktop/project/LearnOpenGL-VSCode/build",
+  "command": "\"C:/Program Files/mingw64/bin/c++.exe\"   @CMakeFiles/demo.dir/includes_CXX.rsp -g   -std=gnu++11 -o CMakeFiles/demo.dir/include/imgui/imgui_impl_glfw.cpp.obj -c C:/Users/Administrator/Desktop/project/LearnOpenGL-VSCode/include/imgui/imgui_impl_glfw.cpp",
+  "file": "C:/Users/Administrator/Desktop/project/LearnOpenGL-VSCode/include/imgui/imgui_impl_glfw.cpp"
+},
+{
+  "directory": "C:/Users/Administrator/Desktop/project/LearnOpenGL-VSCode/build",
+  "command": "\"C:/Program Files/mingw64/bin/c++.exe\"   @CMakeFiles/demo.dir/includes_CXX.rsp -g   -std=gnu++11 -o CMakeFiles/demo.dir/include/imgui/imgui_impl_opengl3.cpp.obj -c C:/Users/Administrator/Desktop/project/LearnOpenGL-VSCode/include/imgui/imgui_impl_opengl3.cpp",
+  "file": "C:/Users/Administrator/Desktop/project/LearnOpenGL-VSCode/include/imgui/imgui_impl_opengl3.cpp"
+},
+{
+  "directory": "C:/Users/Administrator/Desktop/project/LearnOpenGL-VSCode/build",
+  "command": "\"C:/Program Files/mingw64/bin/c++.exe\"   @CMakeFiles/demo.dir/includes_CXX.rsp -g   -std=gnu++11 -o CMakeFiles/demo.dir/include/imgui/imgui_widgets.cpp.obj -c C:/Users/Administrator/Desktop/project/LearnOpenGL-VSCode/include/imgui/imgui_widgets.cpp",
+  "file": "C:/Users/Administrator/Desktop/project/LearnOpenGL-VSCode/include/imgui/imgui_widgets.cpp"
+}
+]

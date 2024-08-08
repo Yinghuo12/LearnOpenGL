@@ -1,0 +1,3 @@
+C:/Users/Administrator/Desktop/project/LearnOpenGL-VSCode/build/CMakeFiles/demo.dir
+C:/Users/Administrator/Desktop/project/LearnOpenGL-VSCode/build/CMakeFiles/edit_cache.dir
+C:/Users/Administrator/Desktop/project/LearnOpenGL-VSCode/build/CMakeFiles/rebuild_cache.dir

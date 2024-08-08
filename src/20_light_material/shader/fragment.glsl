@@ -36,19 +36,23 @@ void main() {
   // vec4 objectColor = mix(texture(texture1, outTexCoord), texture(texture2, outTexCoord), 0.1);
   vec4 objectColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
-  vec3 ambient = light.ambient * material.ambient; // 环境光
-
+  // 光照和法线向量
   vec3 norm = normalize(outNormal);
   vec3 lightDir = normalize(lightPos - outFragPos);
 
-  float diff = max(dot(norm, lightDir), 0.0);
-  vec3 diffuse = light.diffuse * diff * material.diffuse; // 漫反射
+  // 环境光 -----
+  vec3 ambient = light.ambient * material.ambient;
 
+  // 漫反射 -----
+  float diff = max(dot(norm, lightDir), 0.0);
+  vec3 diffuse = light.diffuse * diff * material.diffuse; 
+
+  // 镜面光 -----
   vec3 viewDir = normalize(viewPos - outFragPos);
   vec3 reflectDir = reflect(-lightDir, norm);
 
   float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-  vec3 specular = light.specular * spec * material.specular; // 镜面光
+  vec3 specular = light.specular * spec * material.specular;
 
   vec3 result = (ambient + diffuse + specular) * vec3(objectColor);
 

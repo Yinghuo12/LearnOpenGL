@@ -52,7 +52,7 @@ void main() {
 
   float theta = dot(lightDir, normalize(-light.direction));
 
-  if(theta > light.cutOff) {
+  if(theta > light.cutOff) { // 因为比较的是余弦值,夹角越小则余弦值越大
 
     // ambient
     vec3 ambient = light.ambient * diffuseTexture; 

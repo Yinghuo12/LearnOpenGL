@@ -14,44 +14,38 @@
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
-std::string Shader::dirName;
 
 const unsigned int SCREEN_WIDTH = 800;
 const unsigned int SCREEN_HEIGHT = 600;
+const char *glsl_version = "#version 330";    // 用于imgui
 
-using namespace std;
-
-int main(int argc, char *argv[])
-{
-  Shader::dirName = argv[1];
+int main() {
+  // glfw
   glfwInit();
-  // 设置主要和次要版本
-  const char *glsl_version = "#version 330";
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-  // 创建窗口对象
+  // 窗口
   GLFWwindow *window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "LearnOpenGL", NULL, NULL);
-  if (window == NULL)
-  {
+  if (window == NULL) {
     std::cout << "Failed to create GLFW window" << std::endl;
     glfwTerminate();
     return -1;
   }
   glfwMakeContextCurrent(window);
+  glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);  // 注册窗口变化监听
 
-  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-  {
+  // glad
+  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
     std::cout << "Failed to initialize GLAD" << std::endl;
     return -1;
   }
 
-  // -----------------------
+  // imgui -----------------------
   // 创建imgui上下文
   ImGui::CreateContext();
-  ImGuiIO &io = ImGui::GetIO();
-  (void)io;
+  ImGuiIO &io = ImGui::GetIO();  (void)io;
   // 设置样式
   ImGui::StyleColorsDark();
   // 设置平台和渲染器
@@ -62,17 +56,15 @@ int main(int argc, char *argv[])
 
   // 设置视口
   glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-  glEnable(GL_PROGRAM_POINT_SIZE);
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  // glEnable(GL_PROGRAM_POINT_SIZE);
+  // glEnable(GL_BLEND);
+  // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  glEnable(GL_DEPTH_TEST);
-  // glDepthFunc(GL_LESS);
+  glEnable(GL_DEPTH_TEST);    // 深度缓冲
+  glDepthFunc(GL_LESS);
 
-  // 注册窗口变化监听
-  glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-  Shader ourShader("./shader/vertex.glsl", "./shader/fragment.glsl");
+  Shader ourShader("../src/14_use_image_ui/shader/vertex.glsl", "../src/14_use_image_ui/shader/fragment.glsl");
 
   PlaneGeometry planeGeometry(1.0, 1.0, 1.0, 1.0);
   BoxGeometry boxGeometry(1.0, 1.0, 1.0);
@@ -80,6 +72,8 @@ int main(int argc, char *argv[])
 
   // 生成纹理
   unsigned int texture1, texture2;
+  int width, height, nrChannels;
+
   glGenTextures(1, &texture1);
   glBindTexture(GL_TEXTURE_2D, texture1);
 
@@ -96,11 +90,9 @@ int main(int argc, char *argv[])
   stbi_set_flip_vertically_on_load(true);
 
   // 加载图片
-  int width, height, nrChannels;
-  unsigned char *data = stbi_load("./static/texture/container.jpg", &width, &height, &nrChannels, 0);
+  unsigned char *data = stbi_load("../static/texture/container.jpg", &width, &height, &nrChannels, 0);
 
-  if (data)
-  {
+  if (data) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
   }
@@ -116,14 +108,14 @@ int main(int argc, char *argv[])
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
   // 加载图片
-  data = stbi_load("./static/texture/awesomeface.png", &width, &height, &nrChannels, 0);
+  data = stbi_load("../static/texture/awesomeface.png", &width, &height, &nrChannels, 0);
 
-  if (data)
-  {
+  if (data) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
   }
   stbi_image_free(data);
+
   ourShader.use();
   ourShader.setInt("texture1", 0);
   ourShader.setInt("texture2", 1);
@@ -142,12 +134,14 @@ int main(int argc, char *argv[])
       glm::vec3(1.5f, 0.2f, -1.5f),
       glm::vec3(-1.3f, 1.0f, -1.5f)};
 
-  float f = 0.0f;
-  ImVec4 clear_color = ImVec4(0.21, 0.3, 0.21, 1.0);
-  while (!glfwWindowShouldClose(window))
-  {
+  float f = 0.0f;   // 用于imgui
+  ImVec4 clear_color = ImVec4(0.21, 0.3, 0.21, 1.0);  // 用于imgui
+
+  
+  while (!glfwWindowShouldClose(window)) {
     processInput(window);
 
+    // imgui -----------------
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
@@ -158,17 +152,19 @@ int main(int argc, char *argv[])
     ImGui::ColorEdit3("clear color", (float *)&clear_color);
     ImGui::End();
 
-    cout << "f = " << f << endl;
+    f = sin(glfwGetTime()) / 2 + 0.5f;   // 每帧变化f
+    std::cout << "f = " << f << std::endl;
+    std::cout << "clear_color = (" << clear_color.x << ", " << clear_color.y << ", " << clear_color.z << ", " << clear_color.w << ")" << std::endl;
 
     // 渲染指令
     // ...
-    glClearColor(25.0 / 255.0, 25.0 / 255.0, 25.0 / 255.0, 1.0);
+    glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);  // 传递imgui中的颜色
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     ourShader.use();
 
     factor = glfwGetTime();
-    ourShader.setFloat("factor", -factor * 0.3);
+    ourShader.setFloat("factor", -factor * 0.3); 
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture1);
@@ -176,6 +172,7 @@ int main(int argc, char *argv[])
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, texture2);
 
+    // 设置变换矩阵
     glm::mat4 view = glm::mat4(1.0f);
     view = glm::translate(view, glm::vec3(0.0, 0., -5.0));
     glm::mat4 projection = glm::mat4(1.0f);
@@ -184,10 +181,9 @@ int main(int argc, char *argv[])
     ourShader.setMat4("view", view);
     ourShader.setMat4("projection", projection);
 
+    // 盒模型
     glBindVertexArray(boxGeometry.VAO);
-
-    for (unsigned int i = 0; i < 10; i++)
-    {
+    for (unsigned int i = 0; i < 10; i++) {
       glm::mat4 model = glm::mat4(1.0f);
       model = glm::translate(model, cubePositions[i]);
       model = glm::rotate(model, (float)glfwGetTime() * glm::radians(-55.0f), glm::vec3(1.0, 1.0, 1.0));
@@ -198,6 +194,7 @@ int main(int argc, char *argv[])
       glDrawElements(GL_TRIANGLES, boxGeometry.indices.size(), GL_UNSIGNED_INT, 0);
     }
 
+    // 平面模型
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(-1.0, 0.0, 0.0));
     model = glm::rotate(model, (float)glfwGetTime() * glm::radians(45.0f), glm::vec3(1.0, 0.0, 0.0));
@@ -206,6 +203,7 @@ int main(int argc, char *argv[])
     glBindVertexArray(planeGeometry.VAO);
     glDrawElements(GL_TRIANGLES, planeGeometry.indices.size(), GL_UNSIGNED_INT, 0);
 
+    // 球模型
     model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(1.0, 0.0, 0.0));
     model = glm::rotate(model, (float)glfwGetTime() * glm::radians(45.0f), glm::vec3(1.0, 0.5, 0.5));
@@ -228,17 +226,15 @@ int main(int argc, char *argv[])
   glfwTerminate();
 
   return 0;
+
 }
 
-void framebuffer_size_callback(GLFWwindow *window, int width, int height)
-{
+void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
   glViewport(0, 0, width, height);
 }
 
-void processInput(GLFWwindow *window)
-{
-  if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-  {
+void processInput(GLFWwindow *window) {
+  if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
     glfwSetWindowShouldClose(window, true);
   }
 }

@@ -52,15 +52,13 @@ uniform Material material;
 uniform DirectionLight directionLight;
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform SpotLight spotLight;
-
+uniform vec3 viewPos;
 uniform sampler2D awesomeMap; // 笑脸贴图
 
 in vec2 outTexCoord;
 in vec3 outNormal;
 in vec3 outFragPos;
 
-uniform vec3 viewPos;
-uniform float factor; // 变化值
 
 vec3 CalcDirectionLight(DirectionLight light, vec3 normal, vec3 viewDir);
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir);

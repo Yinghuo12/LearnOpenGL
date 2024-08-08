@@ -31,6 +31,13 @@ public:
   vector<unsigned int> indices;
   unsigned int VAO;
 
+protected:
+  unsigned int VBO, EBO;
+
+private:
+  glm::mat4 matrix = glm::mat4(1.0f);
+
+public:
   void logParameters()
   {
     for (unsigned int i = 0; i < vertices.size(); i++)
@@ -57,12 +64,7 @@ public:
     glDeleteBuffers(1, &EBO);
   }
 
-private:
-  glm::mat4 matrix = glm::mat4(1.0f);
-
-protected:
-  unsigned int VBO, EBO;
-
+public:
   void setupBuffers()
   {
     glGenVertexArrays(1, &VAO);

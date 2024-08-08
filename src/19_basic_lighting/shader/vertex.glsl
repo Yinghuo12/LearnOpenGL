@@ -7,8 +7,6 @@ out vec2 outTexCoord;
 out vec3 outNormal;
 out vec3 outFragPos;
 
-uniform float factor;
-
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
@@ -16,10 +14,9 @@ uniform mat4 projection;
 void main() {
 
   gl_Position = projection * view * model * vec4(Position, 1.0f);
-
-  outFragPos = vec3(model * vec4(Position, 1.0));
-
+  
+  outNormal = mat3(transpose(inverse(model))) * Normal;   // 解决不等比缩放，对法向量产生的影响
   outTexCoord = TexCoords;
-  // 解决不等比缩放，对法向量产生的影响
-  outNormal = mat3(transpose(inverse(model))) * Normal;
+  outFragPos = vec3(model * vec4(Position, 1.0));
+  
 }
